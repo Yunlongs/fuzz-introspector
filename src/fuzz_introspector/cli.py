@@ -44,6 +44,7 @@ def get_cmdline_parser() -> argparse.ArgumentParser:
 
     full_parser = subparsers.add_parser(
         'full', help='Analyse folder and generate HTML report and analyses.')
+    full_parser.add_argument("--harness_file", type=str)
     full_parser.add_argument('--target-dir',
                              type=str,
                              help='Directory holding source to analyse.',

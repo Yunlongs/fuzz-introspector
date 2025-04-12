@@ -708,7 +708,7 @@ class CSourceCodeFile(SourceCodeFile):
         return -1
 
 
-def load_treesitter_trees(source_files: list[str],
+def load_treesitter_trees(source_files: list[str], harness_file: str,
                           is_log: bool = True) -> CProject:
     """Creates treesitter trees for all files in a given list of
     source files."""
@@ -720,11 +720,13 @@ def load_treesitter_trees(source_files: list[str],
 
         source_cls = CSourceCodeFile('c', code_file)
 
-        if is_log:
-            if source_cls.has_libfuzzer_harness():
-                logger.info('harness: %s', code_file)
+        if source_cls.has_libfuzzer_harness():
+            continue
 
         results.append(source_cls)
+        
+    source_cls = CSourceCodeFile('c', harness_file)
+    results.append(source_cls)
 
     return CProject(results)
 

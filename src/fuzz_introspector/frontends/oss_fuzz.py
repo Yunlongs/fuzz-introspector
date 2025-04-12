@@ -62,7 +62,8 @@ def process_c_project(target_dir: str,
                       out: str,
                       source_files: list[str],
                       module_only: bool = False,
-                      dump_output: bool = True) -> Project:
+                      dump_output: bool = True,
+                      harness_file: str = '') -> Project:
     """Process a project in C language"""
     # Default entrypoint
     if not entrypoint:
@@ -71,7 +72,7 @@ def process_c_project(target_dir: str,
     logger.info('Going C route')
     logger.info('Found %d files to include in analysis', len(source_files))
     logger.info('Loading tree-sitter trees and create base project')
-    project = frontend_c.load_treesitter_trees(source_files)
+    project = frontend_c.load_treesitter_trees(source_files, harness_file)
 
     # We may not need to do this, but will do it while refactoring into
     # the new frontends.
@@ -128,6 +129,7 @@ def analyse_folder(
         out='',
         module_only=False,
         dump_output=True,
+        harness_file: str = '',
         files_to_include: Optional[list[str]] = None) -> tuple[Project, Any]:
     """Runs a full frontend analysis on a given directory"""
 
@@ -145,7 +147,8 @@ def analyse_folder(
                                     out,
                                     source_files,
                                     module_only,
-                                    dump_output=dump_output)
+                                    dump_output=dump_output,
+                                    harness_file=harness_file)
     else:
         # Process for different language
         if language == constants.LANGUAGES.CPP:

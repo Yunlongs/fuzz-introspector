@@ -76,7 +76,8 @@ def end_to_end(args) -> int:
                                       out_dir=out_dir,
                                       coverage_url=args.coverage_url,
                                       report_name=args.name,
-                                      module_only=args.module_only)
+                                      module_only=args.module_only,
+                                      harness_file=args.harness_file)
     return exit_code
 
 
@@ -87,7 +88,8 @@ def analyse_end_to_end(arg_language,
                        coverage_url='',
                        report_name='default-report',
                        module_only=False,
-                       dump_files=True):
+                       dump_files=True,
+                       harness_file:str = ''):
     """End to end analysis helper function."""
     return_values = {}
     project, harness_lists = oss_fuzz.analyse_folder(language=arg_language,
@@ -95,7 +97,8 @@ def analyse_end_to_end(arg_language,
                                                      entrypoint=entrypoint,
                                                      out=out_dir,
                                                      module_only=module_only,
-                                                     dump_output=dump_files)
+                                                     dump_output=dump_files,
+                                                     harness_file=harness_file)
     if harness_lists:
         logger.info('We have a harness list')
     else:
