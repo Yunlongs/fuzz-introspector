@@ -724,11 +724,16 @@ def load_treesitter_trees(source_files: list[str], harness_file: str,
             continue
 
         results.append(source_cls)
-        
-    source_cls = CSourceCodeFile('c', harness_file)
-    results.append(source_cls)
+    
+    if not harness_file.isspace():
+        for file in harness_file.split(","):  
+            source_cls = CSourceCodeFile('c', file)
+            results.append(source_cls)
 
-    return CProject(results)
+    project = CProject(results)
+    project.harness_file = harness_file
+
+    return project
 
 
 def analyse_source_code(source_content: str) -> CSourceCodeFile:
